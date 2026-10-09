@@ -22,6 +22,28 @@
 联系flag在路径/etc/passwd中，这是一个ssrf漏洞，用到文件协议（类似http协议）
 于是通过?url=file:///etc/passwd,在末尾找到flag
 
+# ProveYourLove
+## 题目【都七夕了，怎么还是单身狗丫？快拿起勇气向你 crush 表白叭，300份才能证明你的爱！】
+
+进入网页有几个输入框，300份数量庞大，于是想到使用bp的爆破(Intruder)模块，利用ai生成一个字典，值得提的是爆破的方法，在抓取数据包后导入爆破模块，选中要替换的'部分'点击添加payload，设置中导入字典，启动爆破，找到flag
+
+# ez_http
+## 题目(吐槽，对新生而言并非ez)【】
+1`Please use POST method
+打开F12 hackbar(注意是hackbar不是hack`er`bar)load加载 启动POST EXECUTE发包
+2`Please POST the parameter imoau=sb
+在POST的Body中输入imoau=sb,发包
+3`Please GET the parameter xt=大帅b
+在URL中输入?xt=大帅b，但是发现返回了400，观察发现该网页不支持utf-8(笔者建议，以后的题目也尽量使用URL编码，有些题目中可能会禁用诸如等号'='空格' '等字符)于是打开CyberChef将字符转换为url编码,输入发包
+4`The source must be https://www.xidian.edu.cn/
+在http中，由Referer记录你来时的网站，添加这个参数，发包
+5`Please set cookie:user=admin
+有手就行，发包
+6`Please use MoeDedicatedBrowser
+这里值得思考，http中的参数还有谁呢？ 观察发现使用......Browser user-agent参数就是用来记录你使用什么浏览器的，于是添加该参数,发包
+7`Local access only
+哇去，这是什么玩意,想到了LocalHost和X-Forwarded-For，输入127.0.0.1，找到flag
+
 # 垫刀2 
 ## 题目【映入眼帘的是一个文件上传的按钮。看来只要上传点木马什么的，就可以控制机器了吧。】
 
