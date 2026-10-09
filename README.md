@@ -29,19 +29,19 @@
 
 #### ez_http
 ##### 题目(吐槽，对新生而言并非ez)【】
-1`Please use POST method;
+`1 Please use POST method`
 打开F12 hackbar(注意是hackbar不是hack`er`bar)load加载 启动POST EXECUTE发包
-2`Please POST the parameter imoau=sb;
+`2 Please POST the parameter imoau=sb`
 在POST的Body中输入imoau=sb,发包
-3`Please GET the parameter xt=大帅b;
+`3 Please GET the parameter xt=大帅b`
 在URL中输入?xt=大帅b，但是发现返回了400，观察发现该网页不支持utf-8(笔者建议，以后的题目也尽量使用URL编码，有些题目中可能会禁用诸如等号'='空格' '等字符)于是打开CyberChef将字符转换为url编码,输入发包
-4`The source must be https://www.xidian.edu.cn/;
+`4 The source must be https://www.xidian.edu.cn/`
 在http中，由Referer记录你来时的网站，添加这个参数，发包
-5`Please set cookie:user=admin;
+`5 Please set cookie:user=admin`
 有手就行，发包
-6`Please use MoeDedicatedBrowser;
+`6 Please use MoeDedicatedBrowser`
 这里值得思考，http中的参数还有谁呢？ 观察发现使用......Browser user-agent参数就是用来记录你使用什么浏览器的，于是添加该参数,发包
-7`Local access only;
+`7 Local access only`
 哇去，这是什么玩意,想到了LocalHost和X-Forwarded-For，输入127.0.0.1，找到flag
 
 #### 垫刀2 一句话木马
