@@ -61,3 +61,40 @@
 
 打开题目观察readme文件，似乎没有作用，但是在进入/src下目录时，观察到url出现了?path= ，猜测可以目录穿越(经验之谈？),尝试?path=/../../../../etc/passwd
 找到了一些目录，同样方法观察bin文件，在排除bin，dev，etc这些'系统文件'后，在tmp下找到flag
+
+# 垫刀5
+## 题目【这是一个登陆页面。听说管理员叫 admin123 ，而且只要登陆成功，就会显示 flag 。可是，听管理员自己说，它自己的密码在密码强度检查器网站上，需要上百年才能被破译。那么，我们应该怎么登陆进去呢？】
+
+登录界面，首先考虑sql注入漏洞，尝试admin123' or 1=1# 成功登录找到flag
+
+# 垫刀6
+## 题目【】
+//没时间学习php反序列化了，把代码交给ai获取一个payload先
+
+# 垫刀7
+## 题目【Sxrhhh 正在使用 Flask 编写网站服务器，不慎泄漏了 PIN 码, 是时候给他一个乱用调试模式的教训了。】
+
+一个前后端结合的案例，观察网络请求发现，其与python密切相关，尝试利用webshell打开/console或/_debugger
+输入/console,输入题目给的pin码，进入python后端控制台，这里笔者将补充一些os库的知识，以便于获取flag
+### 关os库
+  import os       #必须的步骤
+  WEB相关的重点用法先行列出
+ #os.system("")  #在本题中尝试发现执行任何命令，只会返回一个0
+  例如os.system("pwd")
+       os.system("ls")
+       os.system("whoami")
+  让系统执行pwd，ls，查看user;相当于在py中让系统执行Linux命令行
+ #os.popen("").read() #本题解法
+  这相当于一个管道函数,把让系统执行cat flag后的返回值给到.read()并以python字符串形式返回
+
+再给出一些其他用法，也有其用武之地
+  os.listdir()    #列出当前目录^
+  os.getcwd()     #查看当前目录^
+  os.environ.get()#获取环境变量^
+  os.chdir()      #切换目录  
+  os.mkdir()      #新建目录
+  os.rmdir()      #删除空目录，非空会报错
+  os.path.exists()#判断当前路径下是否有目标文件
+
+  通过os.listdir()发现了flag文件，并通过os.popen("cat flag").read()读取
+  ^于是我们获得了flag
