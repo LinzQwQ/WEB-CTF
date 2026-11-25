@@ -43,13 +43,19 @@ select * from table where id = ("'input'"")
 #### 手工注入
 
 ## SQL注入学习要点
-### 一 掌握sqlmap的使用方法
+### (一) 掌握SQLmap的使用方法
 
 #### 1 单引号 报错注入
-http://172.23.117.36/Less-1/?id=1 ' or 1=1 --+
+http://IP/Less-1/?id=1 ' or 1=1 --+  (此处ip为靶场提供的内网地址)
 利用单引号尝试回显
+得到报错回显 near ''1'' LIMIT 0,1' at line 1
+此处要为初学者解释报错回显的内容
+1. 还原现场
+原始 SQL 模板大概长这样
+'SELECT * FROM users WHERE id='1' LIMIT 0,1'
 
-### 二 掌握手工注入的办法
+
+### (二) 掌握手工注入的办法
 
 
 ## SQL数据库的补充知识
