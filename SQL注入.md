@@ -9,6 +9,7 @@ SQL注入是学习过程中第一个接触的漏洞，也是应用比较广泛�
 用户输入的数据被SQL解释器执行，通过猜测后台的SQL语句，进行恶意的SQL语句查询
 
 正确的SQL查询语句一般为:
+
 `select * from table where id = 'input'`
 
 `select * from table where id = "input"`
@@ -57,10 +58,10 @@ SQL注入是学习过程中第一个接触的漏洞，也是应用比较广泛�
 
 因此输入后拼接得到的SQL语句为
 
-`SELECT * FROM users WHERE id='1'' LIMIT 0,1
-                                 └────┬────┘
-                                   模板残留
-`
+`SELECT * FROM users WHERE id='1'' LIMIT 0,1`
+
+                            └─┬─┘└────┬────┘
+                            你的输入 模板残留
 
 
 ### (二) 掌握手工注入的办法
