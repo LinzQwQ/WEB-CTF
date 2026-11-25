@@ -54,9 +54,9 @@ SQL注入是学习过程中第一个接触的漏洞，也是应用比较广泛�
 `sqlmap.py -u "http://IP/Less-1/?id=1"  --dump -C"id,username,password" -T "users" -D "security"`
 
 
+#### 手工注入语句
 
-
-#### 手工注入
+`id=-1' union select 1,2,3 --+`
 
 ## SQL注入学习要点
 ### (一)验证SQL注入漏洞的存在
@@ -148,8 +148,9 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 
 示例语句:
 
-`id=-1' union select 1,2,3 --+`
+验证语句: `id=-1' union select 1,2,3 --+`
 
+注入查询语句: `id=-1 ' union select 1,group_concat(schema_name),3 from information_schema.schemata --+`关于这里出现的函数，语法，请看文档最后的补充知识
 
 
 
@@ -159,8 +160,22 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 
 
 ## SQL数据库的补充知识
+基础字符部分
 1 注释符号: 常见注释符号为`#` `--`
 2 特殊转义符号: 常见转义符号有`+`(在拼接进入sql语句时会自动变成空格)
+
+sql语法部分(根据学习过程中遇到的顺序进行排列，方便查找)
+1. `group_concat()`
+
+含义: group_concat() 是 MySQL/MariaDB 的`聚合函数`，它把多行数据拼接成一个字符串。在注入中，它的核心价值是：把“一次只能回显一行、一个字段”的输出通道，变成一个能一次获取整张表数据的输出通道。
+
+重要性: 1 解除每次注入只能显示一行的限制。2 使用`group_concat()`可以在括号中拼接多个可查找的目标字段，大大提高效率。3 避免风控，将多次查找降低到一次
+
+2. `information_schema`
+
+含义: 是 MySQL/MariaDB 自带的“元数据库”`（数据字典）`，存放“服务器上有哪些库、哪些表、每张表有哪些列、什么类型、什么权限”这些关于数据的数据。用来摸清结构，提取数据。
+
+结构: `informationm_schema`有三张重要表`schemata` `tables` `columns`分别存储 数据库名，表名，列名
 
 
 
