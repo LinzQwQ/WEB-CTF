@@ -52,7 +52,8 @@ http://IP/Less-1/?id=1 ' or 1=1 --+  (此处ip为靶场提供的内网地址)
 此处要为初学者解释报错回显的内容
 1. 还原现场
 原始 SQL 模板大概长这样
-'SELECT * FROM users WHERE id='1' LIMIT 0,1'
+
+SELECT * FROM users WHERE id='1' LIMIT 0,1
 
 
 ### (二) 掌握手工注入的办法
