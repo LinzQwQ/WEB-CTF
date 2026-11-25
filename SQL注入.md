@@ -8,8 +8,7 @@ SQL注入是学习过程中第一个接触的漏洞，也是应用比较广泛�
 ## 原理
 用户输入的数据被SQL解释器执行，通过猜测后台的SQL语句，进行恶意的SQL语句查询
 
-正确的sql语句一般为
-
+正确的SQL查询语句一般为:
 select * from table where id = 'input'
 
 select * from table where id = "input"
@@ -20,10 +19,35 @@ select * from table where id = ('input')
 
 select * from table where id = ("'input'"")
 
+## 语句快查表
+### 1 常用注入测试payload
+
+' and 1=1 #
+
+' or 1=1 --
+
+" and 1=1 --
+
+" or 1=1 --
+
+') and 1=1 --
+
+") and 1=1 --
+
+'") and 1=1 --
+
+### 2 常用查询注入语句(分为SQLmap语句和手工注入)
+#### SQLmap语句
+
+
+#### 手工注入
 
 ## SQL注入学习要点
 ### 一 掌握sqlmap的使用方法
+
 #### 1 单引号 报错注入
+http://172.23.117.36/Less-1/?id=1 ' or 1=1 --+
+利用单引号尝试回显
 
 ### 二 掌握手工注入的办法
 
