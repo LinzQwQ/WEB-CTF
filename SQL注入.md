@@ -56,7 +56,15 @@ SQL注入是学习过程中第一个接触的漏洞，也是应用比较广泛�
 
 #### 手工注入语句
 
-`id=-1' union select 1,2,3 --+`
+`id=-1' union select 1,2,3 --+ `
+
+`id=-1 union select 1,group_concat(schema_name),3 from information_schema.shcemata --+ `
+
+`id=-1 union select 1,database(),3 from information_schema.shcemata --+ `
+
+`id=-1 union select 1,group_concat(schema_name),3 from information_schema.shcemata --+ `
+
+``
 
 ## SQL注入学习要点
 ### (一)验证SQL注入漏洞的存在
@@ -137,22 +145,23 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 
 #### (2) 掌握手工注入的办法(os:如果你没有sqlmap工具，你要怎么发起攻击呢...?)
 ##### 1. 列字段检测
-`order by n`
 
-解释: `order by n`语句用于测试正确的字段数n
+`order by n`
 
 ##### 2. 手工注入
 采用`union select`联合注入法
 
 原理: 在url语句中已经使用了`'`或者其他的字段闭合了前一个sql语句，后面接`union select`表示继续执行下一个查询语句
 
-示例语句:
+示例(关于这里出现的函数，语法，请看文档最后的补充知识):
 
-验证语句: `id=-1' union select 1,2,3 --+`
+验证语句(注意看id的值): `id=-1' union select 1,2,3 --+`
 
-注入查询语句: `id=-1 ' union select 1,group_concat(schema_name),3 from information_schema.schemata --+`关于这里出现的函数，语法，请看文档最后的补充知识
+注入查询语句: `id=-1 ' union select 1,group_concat(schema_name),3 from information_schema.schemata --+`
 
+除了这样查询之外，还可以传入你想查询的内容
 
+`id=-1 union select 1,database(),3 from information_schema.shcemata --+ ` 
 
 
 
@@ -160,22 +169,32 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 
 
 ## SQL数据库的补充知识
-基础字符部分
+一 基础字符部分
 1 注释符号: 常见注释符号为`#` `--`
 2 特殊转义符号: 常见转义符号有`+`(在拼接进入sql语句时会自动变成空格)
 
-sql语法部分(根据学习过程中遇到的顺序进行排列，方便查找)
-1. `group_concat()`
+二 sql语法部分(根据学习过程中遇到的顺序进行排列，方便查找)
+
+1. `order by n`
+
+解释: `order by n`语句用于测试正确的字段数n，只有当n恰好等于字段数的时候，回显才正确
+
+3. 聪明的你肯定发现了，为啥这里 `id=-1`，原因在于当id的数据在数据库中不存在时，前台页面返回我们构造的union的数据
+
+4. `group_concat()`
 
 含义: group_concat() 是 MySQL/MariaDB 的`聚合函数`，它把多行数据拼接成一个字符串。在注入中，它的核心价值是：把“一次只能回显一行、一个字段”的输出通道，变成一个能一次获取整张表数据的输出通道。
 
 重要性: 1 解除每次注入只能显示一行的限制。2 使用`group_concat()`可以在括号中拼接多个可查找的目标字段，大大提高效率。3 避免风控，将多次查找降低到一次
 
-2. `information_schema`
+4. `information_schema`
 
 含义: 是 MySQL/MariaDB 自带的“元数据库”`（数据字典）`，存放“服务器上有哪些库、哪些表、每张表有哪些列、什么类型、什么权限”这些关于数据的数据。用来摸清结构，提取数据。
 
 结构: `informationm_schema`有三张重要表`schemata` `tables` `columns`分别存储 数据库名，表名，列名
 
+5. `database()`
+
+含义: database()函数会返回当前数据库的名称
 
 
