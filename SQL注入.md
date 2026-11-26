@@ -328,6 +328,52 @@ mysql> show tables;
 
 区别多数取决于闭合用的符号类型: `"` `'"` `')` `")` `'")`
 
+## 特殊注入
+### 更新查询 报错注入(靶场给的教程是错误的)
+
+前端测试
+
+在username框中输入`admin '` `admin "`都失败
+
+常规的报错不行，分析本关卡PASSWORD RESET ，重置密码首先需要知道用户名，尝试admin密码为空，登陆成功。
+
+sql源码
+
+`$update="UPDATE users SET password = '$passwd' WHERE username='$row1'";`
+
+#### ^^^然而！这并不是这一关的打法 
+
+1. 原理
+
+该关卡的`username`使用了转移，因此`admin'` 输入后会被转义为`admin\'`
+
+所以注入点不在username而在password，我们前面猜出来用户名admin，仅仅是登录成功
+
+这个关卡真正能注入的地方: 开发者想到了用户名要转义，却漏了新密码
+
+`php`
+
+`$uname  = check_input($_POST['uname']);   // 转义了 ✅`
+
+`$passwd = $_POST['passwd'];               // 完全没处理 ❌`
+
+`// 先查用户是否存在`
+
+`$sql = "SELECT username, password FROM users WHERE username='$uname' LIMIT 0,1";`
+
+`// 用户存在的话，用查出来的用户名去改密码`
+
+`$update = "UPDATE users SET password = '$passwd' WHERE username='$row1'";`
+
+于是我们基于`username = admin`在`password`框中进行注入操作
+
+1. 查数据库名字(知识见补充内容20)
+
+`password:` ` 1' and updatexml(1,concat(0x7e,(select database())),1) and '1' = '1 `
+
+2. 
+
+
 ## SQL数据库的补充知识
 一 基础字符部分
 
