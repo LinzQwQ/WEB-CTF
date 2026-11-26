@@ -199,7 +199,7 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 
 `id=1 ' and left(database(),1)>"a" --+ `利用二分法可以快速猜解数据库名(os: 并非快速)
 
-困难预警(os:超级拼装)
+####### 困难预警(os:超级拼装)
 
 4. 猜测数据库中的数据表
 
