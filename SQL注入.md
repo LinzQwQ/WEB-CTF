@@ -319,7 +319,10 @@ mysql> show tables;
 
 含义: 从b位置开始，截取字符a的c位
 
-15. IFNULL(expr,replacement)
+15. `IFNULL(expr,replacement)`
 
 含义: 检测expr是否为null，若为null则用replacement替换(示例语句中的0X20为16进制下空格字符)
 
+16. `CAST(expr AS CHAR)`
+
+含义: 把 expr 转成字符类型(CHAR)
