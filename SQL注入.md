@@ -367,13 +367,17 @@ sql源码
 
 于是我们基于`username = admin`在`password`框中进行注入操作
 
-1. 查数据库名字(知识见补充内容20)
+2. 注入过程
+
+(1) 查数据库名字(知识见补充内容20)
 
 `password:` ` 1' and updatexml(1,concat(0x7e,(select database())),1) and '1' = '1 `
 
 回显`XPATH syntax error: '~security'`
 
-2. 
+(2) 所有库名 (注意)
+
+`1' and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_name)),1) and '1' = '1`
 
 
 ## SQL数据库的补充知识
@@ -467,9 +471,33 @@ sql源码
 
 ^ 20. `updatexml(XML_target, XPath_expr, new_XML)`
 
-是 MySQL 的 XML 处理函数，5.1.5 引入，和 extractvalue() 是一对(有兴趣自己查extractvalue()，这里不做展开)
-
 含义: `UPDATEXML(XML_target, XPath_expr, new_XML)`在一段 XML 里用 XPath 定位节点，把匹配到的节点替换成 new_XML，返回修改后的 XML
+
+注: updatexml()只显示32个字符，所以在注入时要用 `1,31`限制显示的长度
+
+1. 为什么这里用`updatexml()`:
+
+XPath 匹配不到任何节点 → 原样返回，不报错
+
+任一参数为 NULL → 返回 NULL
+
+XPath 语法非法 → 抛错，错误信息里带 XPath 原文 (最后这一条，就是注入能利用它的全部原因)
+
+2. 要让数据库“吐出数据”，需要三个条件同时成立：
+
+参数里的子查询会被求值 —— SQL 表达式只要出现在语句里，就会被执行；
+
+出错时错误信息回传给客户端 —— 不是静默失败；
+
+错误信息里包含那个参数的字符串内容。
+
+3. 报错注入利用的过程
+
+`updatexml()`的报错表达式为`XPATH syntax error: '<XPath 表达式的值>'`因此注入时候的回显其实是一条报错信息
+
+把 `select database()` 塞进了XPath的位置，它一定会被sql执行，但XPath校验失败，报错把 ~security 原样带出来
+
+
 
 
 
