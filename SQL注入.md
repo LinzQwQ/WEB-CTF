@@ -311,5 +311,15 @@ mysql> show tables;
 
       整句表示字符串必须以 us 开头，后面紧跟一个小写字母，例如 user_id、`usage` 会匹配；`us` 本身或 us_abc 不匹配。
 
-13. 
+13. `ORD()`
+
+含义: 同`ascii()` 把字符转换成ASCII编码
+
+14. `MID(a,b,c)`
+
+含义: 从b位置开始，截取字符a的c位
+
+15. IFNULL(expr,replacement)
+
+含义: 检测expr是否为null，若为null则用replacement替换(示例语句中的0X20为16进制下空格字符)
 
