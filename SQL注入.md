@@ -187,6 +187,7 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 答案在于 在`语句4`中，表单名作为一个字符串被赋给table_name，而在`语句5`中，表单名本身作为sql语句中的变量参与进语句中。
 
 ###### 另外一些注入的内容
+####### 比较简单的注入
 1. 对mysql版本进行尝试
 
 `id=1' and left(version(),1)=1 --+`页面返回正常，mysql的版本用的是1.xxx的
