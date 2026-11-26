@@ -73,7 +73,7 @@ SQL注入是学习过程中第一个接触的漏洞，也是应用比较广泛�
 
 ## get类型
 
-### （一）验证SQL注入漏洞的存在
+### (一) 验证SQL注入漏洞的存在
 
 举个例子:利用单引号尝试回显`http://IP/Less-1/?id=1 ' or 1=1 --+`  (此处ip为靶场提供的内网地址)得到报错回显 `near ''1'' LIMIT 0,1' at line 1`
 
@@ -127,7 +127,7 @@ MySQL 的报错格式是：... right syntax to use near '<出错的SQL片段>' a
 再构造语句`id=1' and 1=1 --+`和`id=1' and 1=2 --+`逻辑上分别为True和False，页面回显也分别正常和错误，所以存在sql注入漏洞
 
 
-### （二）开始愉快的注入
+### (二) 开始愉快的注入
 #### (1)使用sqlmap工具自动注入(os:使用小飞机发起进攻...)
 1. 用Sqlmap查询数据库类型,输入命令：
 
@@ -302,7 +302,7 @@ mysql> show tables;
 
 `SELECT username, password FROM 用户表 WHERE username="input" and password='input' ;`
 
-1. 验证注入
+### (一) 验证注入
 
 在username框中输入`admin '`
 
@@ -310,7 +310,7 @@ mysql> show tables;
 
 猜测后台sql语句为`SELECT username, password FROM 用户表 WHERE username=('input') and password=('input')  ;`
 
-2. 注入尝试
+### (二) 注入尝试
 
 输入username: `admin` password: `' or 1=1 #`
 
@@ -318,7 +318,7 @@ mysql> show tables;
 
 再次尝试`") or 1=1 #` 登录成功
 
-3. 同样的，若多次无回显，我们可以尝试布尔型/时间延迟盲注
+### (三) 同样的，若多次无回显，我们可以尝试布尔型/时间延迟盲注
 
 `admin'and if(ascii(substr(database(),1,1))=115,1,sleep(5))#`失败
 
@@ -341,7 +341,7 @@ sql源码
 
 `$update="UPDATE users SET password = '$passwd' WHERE username='$row1'";`
 
-#### ^^^然而！这并不是这一关的打法 
+#### ^然而！这并不是这一关的打法 
 
 1. 原理
 
@@ -414,13 +414,13 @@ B. 分段全拿
 ### ^HTTP头Referer字段 报错注入
 
 ## SQL数据库的补充知识
-一 基础字符部分
+### (一) 基础字符部分
 
 1 注释符号: 常见注释符号为`#` `--`
 
 2 特殊转义符号: 常见转义符号有`+`(在拼接进入sql语句时会自动变成空格)
 
-二 sql语法部分(根据学习过程中遇到的顺序进行排列，方便查找)
+### (二) sql语法部分(根据学习过程中遇到的顺序进行排列，方便查找)
 
 1. `order by n`
 
