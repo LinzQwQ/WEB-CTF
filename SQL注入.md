@@ -285,6 +285,8 @@ mysql> show tables;
 
 `?id=1' and if(ascii(substr(database(),1,1))=115,1,sleep(5))--+`
 
+看完补充知识可以理解，如果database()首字母对应s(ascII=115),则响应较快通常表示首字符是 s；延迟则可能表示不是
+
 ## SQL数据库的补充知识
 一 基础字符部分
 
@@ -366,5 +368,10 @@ mysql> show tables;
 
 含义: 表示按 id 列对查询结果排序，默认升序(从小到大)
 
-18. `sleep(t)`
+18. `IF(条件, 1, SLEEP(5))=115`
 
+含义: 若判断为true，则返回1，不然则暂停五秒
+
+19. `sleep(5)`
+
+含义: 暂停5秒
