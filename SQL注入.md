@@ -70,6 +70,9 @@ SQL注入是学习过程中第一个接触的漏洞，也是应用比较广泛�
 `id=-1' union select 1,group_concat(id,username,password),3 from users --+ `
 
 ## SQL注入学习要点
+
+## get类型
+
 ### （一）验证SQL注入漏洞的存在
 
 举个例子:利用单引号尝试回显`http://IP/Less-1/?id=1 ' or 1=1 --+`  (此处ip为靶场提供的内网地址)得到报错回显 `near ''1'' LIMIT 0,1' at line 1`
@@ -287,6 +290,20 @@ mysql> show tables;
 `?id=1' and if(ascii(substr(database(),1,1))=115,1,sleep(5))--+`
 
 看完补充知识可以理解，如果database()首字母对应s(ascII=115),则响应较快通常表示首字符是 s；延迟则可能表示不是
+
+## post类型
+什么是post 呢？就是数据从客户端提交到服务器端，例如我们在登录过程中，输入用户名和密码，用户名和密码以表单的形式提交，提交到服务器后服务器再进行验证。这就是一次post 的过程的。
+
+常见post类型的后台sql语句
+
+`SELECT username, password FROM 用户表 WHERE username='input' and password='input' ;`
+
+`SELECT username, password FROM 用户表 WHERE username='input' and password='input' ;`
+
+`SELECT username, password FROM 用户表 WHERE username="input" and password='input' ;`
+
+
+
 
 ## SQL数据库的补充知识
 一 基础字符部分
