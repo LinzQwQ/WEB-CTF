@@ -345,7 +345,7 @@ sql源码
 
 1. 原理
 
-该关卡的`username`使用了转移，因此`admin'` 输入后会被转义为`admin\'`
+该关卡的`username`使用了转义，因此`admin'` 输入后会被转义为`admin\'`
 
 所以注入点不在username而在password，我们前面猜出来用户名admin，仅仅是登录成功
 
